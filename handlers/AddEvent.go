@@ -13,9 +13,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func CreateTrip(c *fiber.Ctx) error {
-	trip := new(models.Trip)
-	if err := c.BodyParser(trip); err != nil {
+func AddEvent(c *fiber.Ctx) error {
+	event := new(models.Event)
+	if err := c.BodyParser(event); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Invalid request body",
 		})
@@ -28,23 +28,23 @@ func CreateTrip(c *fiber.Ctx) error {
 		})
 	}
 
-	trip.ID = primitive.NewObjectID()
-	trip.Creator = creator
+	event.ID = primitive.NewObjectID()
+	event.Creator = creator
 
 	// Generate a random 5-digit ID
 	rand.Seed(time.Now().UnixNano())
-	trip.TripID = strconv.Itoa(rand.Intn(90000) + 10000)
+	event.EventID = strconv.Itoa(rand.Intn(90000) + 10000)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	_, err := db.GetTripCollection().InsertOne(ctx, trip)
+	_, err := db.GetTripCollection().InsertOne(ctx, event)
 	if err != nil {
-		log.Printf("Error inserting trip: %v", err)
+		log.Printf("Error inserting event: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Failed to create trip",
+			"message": "Failed to create event",
 		})
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(trip)
+	return c.Status(fiber.StatusCreated).JSON(event)
 }

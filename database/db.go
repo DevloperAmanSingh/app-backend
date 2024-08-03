@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -26,10 +27,22 @@ func ConnectDatabase(url, name string) {
 	if err != nil {
 		log.Fatalf("Error pinging database: %v", err)
 	}
+
 	userCollection = client.Database(dbName).Collection("users")
 	tripCollection = client.Database(dbName).Collection("trips")
-	log.Println("Connected to MongoDB!")
 
+	// Create geospatial index on the "location" field
+	indexModel := mongo.IndexModel{
+		Keys: bson.M{
+			"location": "2dsphere",
+		},
+	}
+	_, err = tripCollection.Indexes().CreateOne(context.Background(), indexModel)
+	if err != nil {
+		log.Fatalf("Error creating geospatial index: %v", err)
+	}
+
+	log.Println("Connected to MongoDB!")
 }
 
 func GetUserCollection() *mongo.Collection {

@@ -22,14 +22,14 @@ func SetupRouter() *fiber.App {
 		return controllers.Login(c)
 	})
 
-	app.Post("/createTrip", func(c *fiber.Ctx) error {
-		return handlers.CreateTrip(c)
+	app.Post("/events", func(c *fiber.Ctx) error {
+		return handlers.AddEvent(c)
 	})
-	app.Get("/getTripInfo/:id", func(c *fiber.Ctx) error {
-		return handlers.GetTripInfo(c)
+	app.Get("/events", func(c *fiber.Ctx) error {
+		return handlers.GetEvents(c)
 	})
-	app.Get("/getTrips", func(c *fiber.Ctx) error {
-		return handlers.GetAllTrips(c)
+	app.Get("/events/nearby", func(c *fiber.Ctx) error {
+		return handlers.GetNearbyEvents(c)
 	})
 
 	return app
