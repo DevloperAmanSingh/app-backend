@@ -12,6 +12,8 @@ type Event struct {
 	EventName   string             `json:"event_name" bson:"event_name"`
 	Description string             `json:"description" bson:"description"`
 	Location    GeoJSONPoint       `json:"location" bson:"location"`
+	EventTag    []string           `json:"event_tag" bson:"tags"`
+	EventPlace  string             `json:"event_place" bson:"event_place"`
 	StartTime   time.Time          `json:"start_time" bson:"start_time"`
 	EndTime     time.Time          `json:"end_time" bson:"end_time"`
 	Creator     string             `json:"creator" bson:"creator"`

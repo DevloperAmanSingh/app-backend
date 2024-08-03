@@ -25,8 +25,11 @@ func SetupRouter() *fiber.App {
 	app.Post("/events", func(c *fiber.Ctx) error {
 		return handlers.AddEvent(c)
 	})
-	app.Get("/events", func(c *fiber.Ctx) error {
+	app.Get("/events/tag/all", func(c *fiber.Ctx) error {
 		return handlers.GetEvents(c)
+	})
+	app.Get("/events/tag/:tag", func(c *fiber.Ctx) error {
+		return handlers.GetEventByTag(c)
 	})
 	app.Get("/events/nearby", func(c *fiber.Ctx) error {
 		return handlers.GetNearbyEvents(c)
