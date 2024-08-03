@@ -18,7 +18,7 @@ RUN go mod download
 COPY . .
 
 # Expose port 8080 to the outside world
-EXPOSE 8080
+EXPOSE 8001
 
 # Command to run the executable
 CMD ["go", "run", "main.go"]

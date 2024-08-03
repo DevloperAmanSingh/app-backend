@@ -18,7 +18,7 @@ func main() {
 	dbName := os.Getenv("MONGO_DATABASE_NAME")
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "8001"
 	}
 	db.ConnectDatabase(dbURL, dbName)
 	defer db.DisconnectDatabase()
