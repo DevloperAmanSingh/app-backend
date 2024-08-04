@@ -34,6 +34,15 @@ func SetupRouter() *fiber.App {
 	app.Get("/events/nearby", func(c *fiber.Ctx) error {
 		return handlers.GetNearbyEvents(c)
 	})
+	app.Post("/addBookmark", func(c *fiber.Ctx) error {
+		return handlers.AddBookmark(c)
+	})
+	app.Get("/getBookmarks/:username", func(c *fiber.Ctx) error {
+		return handlers.GetBookmarks(c)
+	})
+	app.Delete("/removeBookmark", func(c *fiber.Ctx) error {
+		return handlers.RemoveBookmark(c)
+	})
 
 	return app
 }

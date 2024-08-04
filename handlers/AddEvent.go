@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"context"
+	"crypto/rand"
+	"fmt"
 	"log"
-	"math/rand"
-	"strconv"
+	"math/big"
 	"time"
 
 	db "github.com/DevloperAmanSingh/app-backend/database"
@@ -12,6 +13,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+func generateRandomID() (string, error) {
+	// Generate a random number between 10000 and 99999
+	nBig, err := rand.Int(rand.Reader, big.NewInt(90000))
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%05d", nBig.Int64()+10000), nil
+}
 
 func AddEvent(c *fiber.Ctx) error {
 	event := new(models.Event)
@@ -32,8 +42,8 @@ func AddEvent(c *fiber.Ctx) error {
 	event.Creator = creator
 
 	// Generate a random 5-digit ID
-	rand.Seed(time.Now().UnixNano())
-	event.EventID = strconv.Itoa(rand.Intn(90000) + 10000)
+
+	event.EventID, _ = generateRandomID()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
